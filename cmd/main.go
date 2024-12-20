@@ -5,45 +5,9 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+  c "go-datastar/features/components"
+  a "go-datastar/features/assets"
 )
-
-const buttonTemplate = /* html */ `
-  {{define "button"}}
-    <button class="button">
-      <span class="button__label">
-        {{ .Label }}
-      </span>
-    </button>
-  {{ end }}
-`
-
-type Button struct {
-	Label string
-}
-
-const pageTemplate = /* html */ `
-{{define "page"}}
-  <!DOCTYPE html>
-  <html>
-
-    <head>
-      <script>
-        console.log("Hello world!")
-      </script>
-    </head>
-
-    <p>
-      asdf
-    </p>
-
-    <body>
-      <h1>Dont let me down!</h1>
-      {{template "body" . }}
-    </body>
-
-  </html>
-{{end}}
-`
 
 const rootPageBody = /* html */ `
 {{define "body"}}
@@ -54,11 +18,11 @@ const rootPageBody = /* html */ `
 `
 
 type RootPage struct {
-	Button Button
+	Button c.Button
 }
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("page").Parse(pageTemplate)
+	tmpl, err := template.New("page").Parse(c.PageTemplate)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -67,7 +31,7 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	_, err = tmpl.Parse(buttonTemplate)
+	_, err = tmpl.Parse(c.ButtonTemplate)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -75,7 +39,7 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
 	rootPage := RootPage{
-		Button: Button{
+		Button: c.Button{
 			Label: "Button?",
 		},
 	}
@@ -88,9 +52,12 @@ func getItem(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, fmt.Sprintf("<h1>Item %s</h1>", id))
 }
 
+
 func main() {
+  assets, _ := a.Assets()
 	mux := http.NewServeMux()
 
+  mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(assets))))
 	mux.HandleFunc("GET /", getRoot)
 	mux.HandleFunc("GET /item/{id}", getItem)
 
