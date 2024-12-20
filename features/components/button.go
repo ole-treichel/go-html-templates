@@ -2,7 +2,12 @@ package components
 
 const ButtonTemplate = /* html */ `
   {{define "button"}}
-    <button class="button">
+    <button
+      class="button"
+      {{ range $key, $value := .Attrs}}
+        {{ $key | safeHTMLAttr }}="{{ $value | safeHTMLAttr }}"
+      {{ end }}
+    >
       <span class="button__label">
         {{ .Label }}
       </span>
@@ -10,6 +15,7 @@ const ButtonTemplate = /* html */ `
   {{ end }}
 `
 
-type Button struct {
+type ButtonProps struct {
 	Label string
+  Attrs map[string]string
 }

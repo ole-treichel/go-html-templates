@@ -69,3 +69,10 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size);
+  padding: var(--size);
+}
