@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"io"
 	"net/http"
-  c "go-datastar/features/components"
-  a "go-datastar/features/assets"
+  c "go-html-templates/features/components"
+  a "go-html-templates/features/assets"
 )
 
 const rootPageBody = /* html */ `
