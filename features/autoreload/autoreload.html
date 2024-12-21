@@ -1,0 +1,29 @@
+{{define "autoreloadscript"}}
+<script>
+  ready(() => {
+    const eventSource = new EventSource("/autoreload")
+
+    eventSource.onopen = function () {
+      console.log('[autoreload] connected')
+    }
+
+    eventSource.onerror = function() {
+      console.log('[autoreload] disconnected')
+      eventSource.onopen = function () {
+        console.log('[autoreload] reconnnected')
+        eventSource.onopen = null
+        eventSource.onerror = null
+
+        console.log('[autoreload] reloading')
+        window.location.reload()
+      }
+    }
+
+    window.addEventListener("beforeunload", function () {
+      if (eventSource.readyState === EventSource.OPEN) {
+        eventSource.close()
+      }
+    })
+  })
+</script>
+{{end}}
