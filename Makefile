@@ -1,2 +1,2 @@
 dev:
-	watchexec -e go -r "go run cmd/main.go"
+	watchexec -e go,js,css,html -r "go run main.go"

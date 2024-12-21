@@ -2,7 +2,7 @@ package home
 
 import (
 	"fmt"
-	c "go-html-templates/features/components"
+	c "go-html-templates/components"
 	"net/http"
 	"os"
 	"time"
