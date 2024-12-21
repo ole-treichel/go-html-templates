@@ -1,4 +1,4 @@
-import '/public/htmx.min.js'
+import '/public/datastar.js'
 
 function ready(callBack) {
   if (document.readyState === "loading") {

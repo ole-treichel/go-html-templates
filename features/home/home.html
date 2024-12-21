@@ -5,16 +5,10 @@
 
   {{block "update-input" .}}
     {{if .Value}}
-      <p hx-swap-oob="true" id="value-display">{{ .Value }}</p>
+      <p id="value-display">{{ .Value }}</p>
     {{else}}
-      <p hx-swap-oob="true" id="value-display">Nothing to see here</p>
+      <p id="value-display">Nothing to see here</p>
     {{end}}
   {{end}}
 
-
-  {{block "update" .}}
-    {{template "button" .Button}}
-  {{end}}
-
-  {{template "button" .AllButton}}
 {{end}}

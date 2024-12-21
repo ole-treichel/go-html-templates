@@ -35,6 +35,7 @@ func main() {
 	mux.Handle("GET /css/", http.StripPrefix("/css", http.FileServer(http.FS(cssFiles))))
 
 	mux.HandleFunc("GET /", home.HomeHandler)
+	mux.HandleFunc("GET /sse/home", home.HomeSSEHandler)
 
 	mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)
 

@@ -60,3 +60,15 @@ func Render(w http.ResponseWriter, name string, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	buffer.WriteTo(w)
 }
+
+func RenderString(name string, data interface{}) string {
+	var buffer bytes.Buffer
+
+	err := tmpl.ExecuteTemplate(&buffer, name, data)
+	if err != nil {
+		err = fmt.Errorf("error executing template: %w", err)
+		return ""
+	}
+
+	return buffer.String()
+}
