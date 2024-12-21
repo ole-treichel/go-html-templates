@@ -1,0 +1,5 @@
+@layer components {
+  button {
+    font-size: calc(var(--size) * 1.2);
+  }
+}

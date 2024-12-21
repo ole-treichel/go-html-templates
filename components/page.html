@@ -1,0 +1,30 @@
+{{define "page"}}
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <link rel="stylesheet" href="/public/index.css" type="text/css">
+      <link rel="icon" href="/publicfavicon.ico">
+      <script>
+        ;(function () {
+          const scheme = localStorage.getItem('colorScheme') || 'dark'
+          document
+            .querySelector('html')
+            .style.setProperty('color-scheme', scheme)
+        })()
+      </script>
+      <script src="/public/htmx.min.js"></script>
+      <script src="/public/index.js"></script>
+      <title>{{block "title" .}}Go{{end}}</title>
+    </head>
+
+    <body>
+      {{block "body" . }}
+      {{end}}
+    </body>
+
+    {{if .Development }}
+      {{template "autoreloadscript" .}}
+    {{end}}
+
+  </html>
+{{end}}

@@ -1,0 +1,88 @@
+@layer base, components, utilities;
+
+@import url('/css/components/button.css');
+@import url('/css/components/page.css');
+@import url('/css/components/input.css');
+
+@layer base {
+  /* 1. Use a more-intuitive box-sizing model */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* 2. Remove default margin */
+  * {
+    margin: 0;
+  }
+
+  body {
+    /* 3. Add accessible line-height */
+    line-height: 1.5;
+    /* 4. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 5. Improve media defaults */
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* 6. Inherit fonts for form controls */
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  /* 7. Avoid text overflows */
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+
+  /* 8. Improve line wrapping */
+  p {
+    text-wrap: pretty;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  /*
+    9. Create a root stacking context
+  */
+  #root, #__next {
+    isolation: isolate;
+  }
+
+  @font-face {
+      font-family: "Berkeley Mono";
+      src: url("/assets/BerkeleyMonoVariable-Regular.ttf");
+      font-variation-settings: "wght" 110;
+      font-display: swap;
+  }
+
+  :root {
+    --size: 1rem;
+  }
+
+  html {
+    --color-text: light-dark(hsl(0, 0%, 7%), hsl(0, 0%, 88%));
+    --color-bg: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 6%));
+    --color-border: light-dark(hsl(0, 0%, 93%), hsl(0, 0%, 15%));
+  }
+
+  html,
+  body {
+    font-family: "Berkeley Mono", monospace;
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size);
+    padding: var(--size);
+  }
+}
+
+

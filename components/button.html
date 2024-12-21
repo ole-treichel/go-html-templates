@@ -1,0 +1,12 @@
+{{define "button"}}
+  <button
+    class="button"
+    {{ range $key, $value := .Attrs}}
+      {{ $key | safeHTMLAttr }}="{{ $value | safeHTMLAttr }}"
+    {{ end }}
+  >
+    <span class="button__label">
+      {{ .Label }}
+    </span>
+  </button>
+{{ end }}
