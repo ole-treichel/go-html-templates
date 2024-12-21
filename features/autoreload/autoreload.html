@@ -1,5 +1,7 @@
 {{define "autoreloadscript"}}
-<script>
+<script type="module">
+  import { ready } from '/public/main.js'
+
   ready(() => {
     const eventSource = new EventSource("/autoreload")
 
