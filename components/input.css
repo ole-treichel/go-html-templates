@@ -1,0 +1,23 @@
+@layer components {
+  .input {
+    max-width: fit-content;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    height: var(--input-height);
+    display: flex;
+    align-items: center;
+  }
+
+  .input__input {
+    background: none;
+    border: none;
+    outline: none;
+    font-size: calc(var(--size) * 0.8);
+    padding: 0 calc(var(--size) * 0.5);
+  }
+
+  .input:has(:focus) {
+    outline: 1px solid var(--color-text);
+  }
+}

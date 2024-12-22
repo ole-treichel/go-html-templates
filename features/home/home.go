@@ -17,35 +17,58 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		c.PageProps{
 			Title: "Home",
 		},
-		h.H1(g.Text("Home")),
-		c.Input(c.InputProps{
-			ID:          "value",
-			Label:       "Input",
-			Placeholder: "Type something...",
-			Value:       value,
-			Attrs: []c.Attr{
-				c.Attr{
-					Key:   "data-bind-value",
-					Value: "",
-				},
-				c.Attr{
-					Key:   "data-on-input__debounce.500ms",
-					Value: "sse('/sse/home')",
+		c.Stack(c.StackProps{
+			Gap: c.GapMedium,
+		},
+			h.H1(g.Text("Home")),
+			c.Stack(c.StackProps{
+				Row: true,
+				Gap: c.GapSmall,
+				Attrs: []c.Attr{
+					{
+						Key:   "data-signals-value",
+						Value: "'init'",
+					},
 				},
 			},
-		}),
-		g.Iff(value != "", func() g.Node {
-			return h.P(
-				g.Attr("id", "value-display"),
-				g.Text(value),
-			)
-		}),
-		g.Iff(value == "", func() g.Node {
-			return h.P(
-				g.Attr("id", "value-display"),
-				g.Text("Nothing to see here yet"),
-			)
-		}),
+				c.Input(c.InputProps{
+					ID:          "value",
+					Placeholder: "Type something...",
+					Value:       value,
+					Attrs: []c.Attr{
+						{
+							Key:   "data-bind",
+							Value: "value",
+						},
+						{
+							Key:   "data-on-input__debounce.500ms",
+							Value: "sse('/sse/home')",
+						},
+					},
+				}),
+				c.Button(c.ButtonProps{
+					Label: "Button",
+					Attrs: []c.Attr{
+						{
+							Key:   "data-on-click",
+							Value: "value.value = 'Button'",
+						},
+					},
+				}),
+			),
+			g.Iff(value != "", func() g.Node {
+				return h.P(
+					g.Attr("id", "value-display"),
+					g.Text(value),
+				)
+			}),
+			g.Iff(value == "", func() g.Node {
+				return h.P(
+					g.Attr("id", "value-display"),
+					g.Text("Nothing to see here yet"),
+				)
+			}),
+		),
 	).Render(w)
 }
 
