@@ -3,15 +3,14 @@ module go-html-templates
 go 1.23.4
 
 require (
-	github.com/a-h/templ v0.2.793 // indirect
-	github.com/delaneyj/gostar v0.8.0 // indirect
-	github.com/goccy/go-json v0.10.3 // indirect
-	github.com/igrmk/treemap/v2 v2.0.1 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
-	github.com/samber/lo v1.47.0 // indirect
-	github.com/starfederation/datastar v0.21.3 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f // indirect
-	golang.org/x/text v0.20.0 // indirect
-	maragu.dev/gomponents v1.0.0 // indirect
+	github.com/joho/godotenv v1.5.1
+	github.com/mattn/go-sqlite3 v1.14.24
+	maragu.dev/gomponents v1.0.0
+)
+
+require (
+	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/paulmach/orb v0.11.1
+	github.com/paulmach/protoscan v0.2.1 // indirect
+	go.mongodb.org/mongo-driver v1.11.4 // indirect
 )

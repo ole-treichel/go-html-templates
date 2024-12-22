@@ -1,4 +1,4 @@
-import { ready } from '/public/main.js'
+import { ready } from '/public/assets/main.js'
 
 ready(() => {
   console.log('input')

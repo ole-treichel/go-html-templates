@@ -27,7 +27,7 @@ func AutoreloadScript() g.Node {
 	return h.Script(
 		g.Attr("type", "module"),
 		g.Raw(`
-      import { ready } from '/public/main.js'
+      import { ready } from '/public/assets/main.js'
 
       ready(() => {
         const eventSource = new EventSource("/autoreload")

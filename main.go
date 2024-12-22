@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	ar "go-html-templates/features/autoreload"
-	"go-html-templates/features/home"
 	"log"
 	"net/http"
 	"os"
@@ -11,13 +10,13 @@ import (
 	"embed"
 
 	"github.com/joho/godotenv"
+
+	mapp "go-html-templates/features/mapp"
+	places "go-html-templates/features/places"
 )
 
-//go:embed all:public
+//go:embed all:assets components/*.css components/*.js features/**/*.css features/**/*.js
 var publicFiles embed.FS
-
-//go:embed components/*.css
-var cssFiles embed.FS
 
 func main() {
 	err := godotenv.Load()
@@ -25,12 +24,13 @@ func main() {
 		log.Println("No .env file loaded")
 	}
 
-	mux := http.NewServeMux()
-	mux.Handle("GET /public/", http.FileServer(http.FS(publicFiles)))
-	mux.Handle("GET /css/", http.StripPrefix("/css", http.FileServer(http.FS(cssFiles))))
+	places.Setup(os.Getenv("DATABASE_URL"))
 
-	mux.HandleFunc("GET /", home.HomeHandler)
-	mux.HandleFunc("GET /sse/home", home.HomeSSEHandler)
+	mux := http.NewServeMux()
+	mux.Handle("GET /public/", http.StripPrefix("/public/", http.FileServer(http.FS(publicFiles))))
+
+	mux.HandleFunc("GET /", mapp.MapHandler)
+	mux.HandleFunc("GET /places/mvt/{x}/{y}/{z}", places.MvtHandler)
 
 	if os.Getenv("APP_ENV") == "development" {
 		mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)

@@ -21,12 +21,17 @@ func Page(props PageProps, children ...g.Node) g.Node {
 			Head: []g.Node{
 				h.Link(
 					g.Attr("rel", "stylesheet"),
-					g.Attr("href", "/public/main.css"),
+					g.Attr("href", "/public/assets/maplibre-gl.min.css"),
+					g.Attr("type", "text/css"),
+				),
+				h.Link(
+					g.Attr("rel", "stylesheet"),
+					g.Attr("href", "/public/assets/main.css"),
 					g.Attr("type", "text/css"),
 				),
 				h.Link(
 					g.Attr("rel", "icon"),
-					g.Attr("href", "/public/favicon.ico"),
+					g.Attr("href", "/public/assets/favicon.ico"),
 				),
 				h.Script(
 					g.Raw(`
@@ -39,8 +44,21 @@ func Page(props PageProps, children ...g.Node) g.Node {
           `),
 				),
 				h.Script(
+					g.Attr("src", "/public/assets/pmtiles.js"),
+				),
+				h.Script(
+					g.Attr("src", "/public/assets/maplibre-gl.min.js"),
+				),
+				h.Script(
+					g.Attr("src", "/public/assets/protomaps-themes-base.min.js"),
+				),
+				h.Script(
 					g.Attr("type", "module"),
-					g.Attr("src", "/public/main.js"),
+					g.Attr("src", "/public/assets/main.js"),
+				),
+				h.Script(
+					g.Attr("type", "module"),
+					g.Attr("src", "/public/features/mapp/map.js"),
 				),
 			},
 			Body: []g.Node{
