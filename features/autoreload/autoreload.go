@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	g "maragu.dev/gomponents"
+	h "maragu.dev/gomponents/html"
 )
 
 func AutoreloadHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,4 +21,39 @@ func AutoreloadHandler(w http.ResponseWriter, r *http.Request) {
 		w.(http.Flusher).Flush()
 		i++
 	}
+}
+
+func AutoreloadScript() g.Node {
+	return h.Script(
+		g.Attr("type", "module"),
+		g.Raw(`
+      import { ready } from '/public/main.js'
+
+      ready(() => {
+        const eventSource = new EventSource("/autoreload")
+
+        eventSource.onopen = function () {
+          console.log('[autoreload] connected')
+        }
+
+        eventSource.onerror = function() {
+          console.log('[autoreload] disconnected')
+          eventSource.onopen = function () {
+            console.log('[autoreload] reconnnected')
+            eventSource.onopen = null
+            eventSource.onerror = null
+
+            console.log('[autoreload] reloading')
+            window.location.reload()
+          }
+        }
+
+        window.addEventListener("beforeunload", function () {
+          if (eventSource.readyState === EventSource.OPEN) {
+            eventSource.close()
+          }
+        })
+      })
+    `,
+		))
 }

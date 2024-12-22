@@ -2,19 +2,16 @@ package main
 
 import (
 	"fmt"
-	c "go-html-templates/components"
 	ar "go-html-templates/features/autoreload"
 	"go-html-templates/features/home"
 	"log"
 	"net/http"
+	"os"
 
 	"embed"
 
 	"github.com/joho/godotenv"
 )
-
-//go:embed components/*.html features/**/*.html
-var componentFiles embed.FS
 
 //go:embed all:public
 var publicFiles embed.FS
@@ -28,8 +25,6 @@ func main() {
 		log.Println("No .env file loaded")
 	}
 
-	c.NewComponents(componentFiles)
-
 	mux := http.NewServeMux()
 	mux.Handle("GET /public/", http.FileServer(http.FS(publicFiles)))
 	mux.Handle("GET /css/", http.StripPrefix("/css", http.FileServer(http.FS(cssFiles))))
@@ -37,7 +32,9 @@ func main() {
 	mux.HandleFunc("GET /", home.HomeHandler)
 	mux.HandleFunc("GET /sse/home", home.HomeSSEHandler)
 
-	mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)
+	if os.Getenv("APP_ENV") == "development" {
+		mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)
+	}
 
 	fmt.Println("Server listening on http://localhost:3000")
 	http.ListenAndServe(":3000", mux)

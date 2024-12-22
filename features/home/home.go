@@ -1,38 +1,52 @@
 package home
 
 import (
+	"fmt"
 	c "go-html-templates/components"
 	"net/http"
-	"os"
 
 	datastar "github.com/starfederation/datastar/sdk/go"
+	g "maragu.dev/gomponents"
+	h "maragu.dev/gomponents/html"
 )
-
-type HomeProps struct {
-	Development bool
-	Input       c.InputProps
-	Value       string
-}
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	value := r.URL.Query().Get("value")
 
-	homeProps := HomeProps{
-		Value: value,
-		Input: c.InputProps{
-			Label:       "Input",
-			Value:       value,
-			ID:          "value",
-			Placeholder: "Type something...",
-			Attrs: map[string]string{
-				"data-bind-value":               "",
-				"data-on-input__debounce.500ms": "sse('/sse/home')",
-			},
+	c.Page(
+		c.PageProps{
+			Title: "Home",
 		},
-		Development: os.Getenv("APP_ENV") == "development",
-	}
-
-	c.Render(w, "page", homeProps)
+		h.H1(g.Text("Home")),
+		c.Input(c.InputProps{
+			ID:          "value",
+			Label:       "Input",
+			Placeholder: "Type something...",
+			Value:       value,
+			Attrs: []c.Attr{
+				c.Attr{
+					Key:   "data-bind-value",
+					Value: "",
+				},
+				c.Attr{
+					Key:   "data-on-input__debounce.500ms",
+					Value: "sse('/sse/home')",
+				},
+			},
+		}),
+		g.Iff(value != "", func() g.Node {
+			return h.P(
+				g.Attr("id", "value-display"),
+				g.Text(value),
+			)
+		}),
+		g.Iff(value == "", func() g.Node {
+			return h.P(
+				g.Attr("id", "value-display"),
+				g.Text("Nothing to see here yet"),
+			)
+		}),
+	).Render(w)
 }
 
 type UpdateInputSignals struct {
@@ -48,22 +62,12 @@ func HomeSSEHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	homeProps := HomeProps{
-		Value: signals.Value,
-		Input: c.InputProps{
-			Label:       "Input",
-			Value:       signals.Value,
-			ID:          "value",
-			Placeholder: "Type something...",
-			Attrs: map[string]string{
-				"data-bind-value":               "",
-				"data-on-input__debounce.500ms": "sse('/sse/home')",
-			},
-		},
-		Development: os.Getenv("APP_ENV") == "development",
-	}
-
 	sse.MergeFragments(
-		c.RenderString("update-input", homeProps),
+		fmt.Sprint(
+			h.P(
+				g.Attr("id", "value-display"),
+				g.Text(signals.Value),
+			),
+		),
 	)
 }
