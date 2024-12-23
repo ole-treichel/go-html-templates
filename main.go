@@ -30,7 +30,7 @@ func main() {
 	mux.Handle("GET /public/", http.StripPrefix("/public/", http.FileServer(http.FS(publicFiles))))
 
 	mux.HandleFunc("GET /", mapp.MapHandler)
-	mux.HandleFunc("GET /places/mvt/{x}/{y}/{z}", places.MvtHandler)
+	mux.HandleFunc("GET /places/mvt/{z}/{x}/{y}", places.MvtHandler)
 
 	if os.Getenv("APP_ENV") == "development" {
 		mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)

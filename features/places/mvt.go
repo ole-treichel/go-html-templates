@@ -32,7 +32,7 @@ func GetVectorTile(t TileCoordinates) (VectorTileResult, error) {
 	tileBound := tile.Bound()
 
 	rows, err := Conn.Query(
-		"select AsGeoJSON(SetSRID(geom, 4326)) from places where MbrIntersects(geom, BuildMbr($1, $2, $3, $4, 3857))",
+		"select AsGeoJSON(geom) from places where MbrIntersects(geom, BuildMbr($1, $2, $3, $4, 4326))",
 		tileBound.LeftTop().X(),
 		tileBound.LeftTop().Y(),
 		tileBound.RightBottom().X(),
@@ -59,7 +59,7 @@ func GetVectorTile(t TileCoordinates) (VectorTileResult, error) {
 	}
 
 	layers := mvt.NewLayers(map[string]*geojson.FeatureCollection{
-		"default": featureCollection,
+		"places": featureCollection,
 	})
 	layers.ProjectToTile(tile)
 	layers.Clip(mvt.MapboxGLDefaultExtentBound)
@@ -72,13 +72,13 @@ func GetVectorTile(t TileCoordinates) (VectorTileResult, error) {
 		return VectorTileResult{}, err
 	}
 
-	fmt.Println("---")
-	fmt.Println("coords: ", t)
+	/* fmt.Println("---")
+	fmt.Println("coords: ", t.Z, t.X, t.Y)
 	fmt.Println("featureCollection: ", featureCollection)
 	fmt.Println("tile: ", tile)
 	fmt.Println("tile bound: ", tile.Bound())
 	fmt.Println("data: ", data)
-	fmt.Println("---")
+	fmt.Println("---") */
 
 	return VectorTileResult{Tile: data}, nil
 }

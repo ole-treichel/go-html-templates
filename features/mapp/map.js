@@ -22,7 +22,7 @@ class Map extends HTMLElement {
           },
           places: {
             type: 'vector',
-            tiles: [absoluteUrl('/places/mvt/{x}/{y}/{z}')],
+            tiles: [absoluteUrl('/places/mvt/{z}/{x}/{y}')],
             maxzoom: 14
           },
         },
@@ -62,6 +62,8 @@ class Map extends HTMLElement {
       center: [0, 0],
       zoom: 2
     })
+
+    this.map.showTileBoundaries = true
   }
 }
 
