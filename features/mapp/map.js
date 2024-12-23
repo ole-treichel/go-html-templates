@@ -29,7 +29,7 @@ class Map extends HTMLElement {
         glyphs: absoluteUrl('/public/assets/map-fonts/{range}.pbf?fontstack={fontstack}'),
         sprite: absoluteUrl('/public/assets/map-sprites/light'),
         layers: [
-          ...protomaps_themes_base.default('osm','light'),
+          ...protomaps_themes_base.default('osm','dark'),
           {
             'id': 'places-polygon-line',
             'filter': ['==', ['geometry-type'], 'Polygon'],
@@ -63,7 +63,7 @@ class Map extends HTMLElement {
       zoom: 2
     })
 
-    this.map.showTileBoundaries = true
+    // this.map.showTileBoundaries = true
   }
 }
 

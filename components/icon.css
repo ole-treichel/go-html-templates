@@ -1,0 +1,5 @@
+.icon {
+  height: calc(var(--size) * 1);
+  width:  calc(var(--size) * 1);
+  fill: currentColor;
+}

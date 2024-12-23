@@ -18,6 +18,11 @@
     line-height: calc(var(--size) * 0.8);
   }
 
+  .button__icon {
+    height: calc(var(--size)* 1);
+    width: calc(var(--size) * 1);
+  }
+
   .button:hover, .button:focus {
     background: var(--color-surface);
     color: var(--color-text);
@@ -26,5 +31,14 @@
 
   .button:focus {
     outline: 1px solid var(--color-text);
+  }
+
+  .button--ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text);
+  }
+
+  .button--ghost:hover, .button--ghost:focus {
   }
 }

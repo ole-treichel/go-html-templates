@@ -1,7 +1,8 @@
 @layer base, components, utilities;
 
 @import url('/public/components/button.css');
-@import url('/public/components/page.css');
+@import url('/public/components/icon.css');
+@import url('/public/components/app-shell.css');
 @import url('/public/components/input.css');
 @import url('/public/components/stack.css');
 
@@ -83,6 +84,21 @@
   }
 
   body {
+  }
+}
+
+@layer utilities {
+  .mt-auto {
+    margin-top: auto;
+  }
+  .mr-auto {
+    margin-right: auto;
+  }
+  .mb-auto {
+    margin-bottom: auto;
+  }
+  .ml-auto {
+    margin-left: auto;
   }
 }
 
