@@ -73,11 +73,19 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
               bottom: $persist(false),
               width: $persist(0),
               height: $persist(0),
+              dragging: false,
               toggleLayout() {
                 if (this.bottom) {
                   this.bottom = false
                 } else {
                   this.bottom = true
+                }
+              },
+              handleMouseMove(e) {
+                if (!this.bottom) {
+                  this.width = e.clientX
+                } else {
+                  this.height = window.innerHeight - e.clientY
                 }
               },
             }`,
@@ -92,6 +100,10 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 							g.Attr("x-bind:style", "{ 'width': !bottom ? width + 'px' : null, 'height': bottom ? height + 'px' : null }"),
 							h.Div(
 								h.Class("app-shell__pane-resize"),
+								g.Attr("x-ref", "pane-resize"),
+								g.Attr("x-on:mousedown", "dragging = true"),
+								g.Attr("x-on:mouseup.document", "dragging = false"),
+								g.Attr("x-on:mousemove.document.throttle.10ms", "!!dragging && handleMouseMove($event)"),
 							),
 							h.Div(
 								h.Class("app-shell__pane-header"),
