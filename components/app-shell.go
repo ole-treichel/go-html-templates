@@ -108,8 +108,11 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 							h.Div(
 								h.Class("app-shell__pane-header"),
 								Button(ButtonProps{
-									IconStart: "ri-layout-bottom-line",
-									Variant:   ButtonVariantGhost,
+									IconStart: g.Group([]g.Node{
+										Icon(IconProps{Icon: "ri-layout-bottom-line", Attrs: []Attr{{Key: "x-show", Value: "!bottom"}}}),
+										Icon(IconProps{Icon: "ri-layout-left-line", Attrs: []Attr{{Key: "x-show", Value: "bottom"}}}),
+									}),
+									Variant: ButtonVariantGhost,
 									Classes: Classes{
 										"ml-auto": true,
 									},
@@ -117,6 +120,10 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 										{
 											Key:   "x-on:click",
 											Value: "toggleLayout()",
+										},
+										{
+											Key:   "x-ref",
+											Value: "toggle-layout-button",
 										},
 									},
 								}),

@@ -14,8 +14,8 @@ const (
 
 type ButtonProps struct {
 	Label     string
-	IconStart string
-	IconEnd   string
+	IconStart g.Node
+	IconEnd   g.Node
 	Attrs     []Attr
 	Variant   ButtonVariant
 	Classes   Classes
@@ -34,10 +34,10 @@ func Button(props ButtonProps) g.Node {
 			return g.Attr(attr.Key, attr.Value)
 		}),
 
-		g.Iff(props.IconStart != "", func() g.Node {
+		g.Iff(props.IconStart != nil, func() g.Node {
 			return h.Span(
 				h.Class("button__icon"),
-				Icon(IconProps{Icon: props.IconStart}),
+				props.IconStart,
 			)
 		}),
 
@@ -48,10 +48,10 @@ func Button(props ButtonProps) g.Node {
 			)
 		}),
 
-		g.Iff(props.IconEnd != "", func() g.Node {
+		g.Iff(props.IconEnd != nil, func() g.Node {
 			return h.Span(
 				h.Class("button__icon"),
-				Icon(IconProps{Icon: props.IconEnd}),
+				props.IconEnd,
 			)
 		}),
 	)
