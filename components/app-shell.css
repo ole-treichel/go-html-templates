@@ -56,7 +56,7 @@
 }
 
 .app-shell__pane-body {
-  padding: var(--size);
+  overflow-y: scroll;
 }
 
 .app-shell--pane .app-shell__main {

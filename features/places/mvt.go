@@ -22,7 +22,7 @@ type VectorTileResult struct {
 	Tile []byte `db:"tile"`
 }
 
-type Place struct {
+type MvtPlace struct {
 	Id   int    `db:"id"`
 	Geom string `db:"geom"`
 }

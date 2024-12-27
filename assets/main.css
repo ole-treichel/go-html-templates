@@ -7,6 +7,7 @@
 @import url('/public/components/stack.css');
 
 @import url('/public/features/mapp/map.css');
+@import url('/public/features/places/places.css');
 
 @layer base {
   /* 1. Use a more-intuitive box-sizing model */

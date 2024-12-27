@@ -6,6 +6,7 @@ class Map extends HTMLElement {
 
     this.handleMoveEnd = this.handleMoveEnd.bind(this)
     this.center = this.center.bind(this)
+    this.fitBounds = this.fitBounds.bind(this)
   }
 
   connectedCallback() {
@@ -72,6 +73,9 @@ class Map extends HTMLElement {
 
     this.map.on('moveend', this.handleMoveEnd)
     this.map.on('load', this.handleMoveEnd)
+
+    window.addEventListener('map-center', e => this.center(e.detail))
+    window.addEventListener('map-fit-bounds', e => this.fitBounds(e.detail))
   }
 
   handleMoveEnd() {
@@ -85,6 +89,21 @@ class Map extends HTMLElement {
     this.map.jumpTo({
       center: [lng, lat],
       zoom: z,
+    })
+  }
+
+  fitBounds({ geometry }) {
+    const polygonPoints = geometry.coordinates[0]
+    const bounds = new maplibregl.LngLatBounds(polygonPoints[0], polygonPoints[0])
+
+    for (const point of polygonPoints) {
+      bounds.extend(point)
+    }
+
+    // Fit the map to the bounds
+    this.map.fitBounds(bounds, {
+      padding: 100,
+      duration: 0
     })
   }
 }

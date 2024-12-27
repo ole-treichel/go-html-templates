@@ -11,7 +11,6 @@ import (
 
 	"github.com/joho/godotenv"
 
-	mapp "go-html-templates/features/mapp"
 	places "go-html-templates/features/places"
 )
 
@@ -29,7 +28,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("GET /public/", http.StripPrefix("/public/", http.FileServer(http.FS(publicFiles))))
 
-	mux.HandleFunc("GET /", mapp.MapHandler)
+	mux.HandleFunc("GET /", places.MapHandler)
 	mux.HandleFunc("GET /places/mvt/{z}/{x}/{y}", places.MvtHandler)
 
 	if os.Getenv("APP_ENV") == "development" {
