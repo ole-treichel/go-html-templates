@@ -107,6 +107,19 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 							),
 							h.Div(
 								h.Class("app-shell__pane-header"),
+								Stack(StackProps{
+									Row: true,
+									Gap: GapSmall,
+								},
+									Button(ButtonProps{
+										Variant: ButtonVariantGhost,
+										Label:   "New",
+									}),
+									Button(ButtonProps{
+										Variant: ButtonVariantGhost,
+										Label:   "Filter",
+									}),
+								),
 								Button(ButtonProps{
 									IconStart: g.Group([]g.Node{
 										Icon(IconProps{Icon: "ri-layout-bottom-line", Attrs: []Attr{{Key: "x-show", Value: "!bottom"}}}),

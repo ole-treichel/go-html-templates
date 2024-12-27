@@ -70,7 +70,7 @@
     --color-border: light-dark(hsl(0, 0%, 93%), hsl(0, 0%, 15%));
 
     --border-radius: 3px;
-    --input-height: calc(var(--size) * 1.8);
+    --input-height: calc(var(--size) * 1.4);
   }
 
   html,

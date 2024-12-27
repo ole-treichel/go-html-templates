@@ -12,15 +12,15 @@
   }
 
   .stack--gap-small {
-    gap: calc(var(--size) * 1);
+    gap: calc(var(--size) * 0.5);
   }
 
   .stack--gap-medium {
-    gap: calc(var(--size) * 1.5);
+    gap: calc(var(--size) * 1);
   }
 
   .stack--gap-large {
-    gap: calc(var(--size) * 2);
+    gap: calc(var(--size) * 1.5);
   }
 }
 
