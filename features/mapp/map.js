@@ -1,6 +1,13 @@
 import { absoluteUrl } from '/public/assets/main.js'
 
 class Map extends HTMLElement {
+  constructor() {
+    super()
+
+    this.handleMoveEnd = this.handleMoveEnd.bind(this)
+    this.center = this.center.bind(this)
+  }
+
   connectedCallback() {
     this.container = document.createElement('div')
     this.container.style.height = '100%'
@@ -63,7 +70,22 @@ class Map extends HTMLElement {
       zoom: 2
     })
 
-    // this.map.showTileBoundaries = true
+    this.map.on('moveend', this.handleMoveEnd)
+    this.map.on('load', this.handleMoveEnd)
+  }
+
+  handleMoveEnd() {
+    const bounds = this.map.getBounds()
+    const center = this.map.getCenter()
+    const zoom = this.map.getZoom()
+    window.dispatchEvent(new CustomEvent('mapmove', { detail: { zoom, bounds, center } }))
+  }
+
+  center({ lat, lng, z }) {
+    this.map.jumpTo({
+      center: [lng, lat],
+      zoom: z,
+    })
   }
 }
 
