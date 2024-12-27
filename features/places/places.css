@@ -1,0 +1,33 @@
+.places-list {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: calc(var(--size) * 2) auto auto min-content;
+  column-gap: calc(var(--size) * 0.5);
+}
+
+.places-list__place {
+  grid-column: 1 / span 4;
+  grid-row: span 1;
+
+  display: grid;
+  grid-template-columns: subgrid;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.places-list__place:last-child {
+  border-bottom: none;
+}
+
+.places-list__place-cell {
+  padding: calc(var(--size) * 0.5);
+}
+
+.places-list__place-cell-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.places-list__place:hover {
+  background: var(--color-surface);
+}
+

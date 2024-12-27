@@ -2,7 +2,6 @@ package components
 
 import (
 	g "maragu.dev/gomponents"
-	gc "maragu.dev/gomponents/components"
 	h "maragu.dev/gomponents/html"
 )
 
@@ -16,9 +15,10 @@ const (
 )
 
 type StackProps struct {
-	Row   bool
-	Gap   Gap
-	Attrs []Attr
+	Row     bool
+	Gap     Gap
+	Attrs   []Attr
+	Classes Classes
 }
 
 func Stack(props StackProps, children ...g.Node) g.Node {
@@ -34,12 +34,15 @@ func Stack(props StackProps, children ...g.Node) g.Node {
 	}
 
 	return h.Div(
-		gc.Classes{
-			"stack":         true,
-			"stack--column": !props.Row,
-			"stack--row":    props.Row,
-			gapClass:        gapClass != "",
-		},
+		g.Attr(
+			"class",
+			Cls(Classes{
+				"stack":         true,
+				"stack--column": !props.Row,
+				"stack--row":    props.Row,
+				gapClass:        gapClass != "",
+			}, props.Classes),
+		),
 		g.Map(props.Attrs, func(attr Attr) g.Node {
 			return g.Attr(attr.Key, attr.Value)
 		}),

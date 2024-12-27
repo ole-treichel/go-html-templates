@@ -120,26 +120,67 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 										Label:   "Filter",
 									}),
 								),
-								Button(ButtonProps{
-									IconStart: g.Group([]g.Node{
-										Icon(IconProps{Icon: "ri-layout-bottom-line", Attrs: []Attr{{Key: "x-show", Value: "!bottom"}}}),
-										Icon(IconProps{Icon: "ri-layout-left-line", Attrs: []Attr{{Key: "x-show", Value: "bottom"}}}),
-									}),
-									Variant: ButtonVariantGhost,
+								Stack(StackProps{
+									Row: true,
+									Gap: GapSmall,
 									Classes: Classes{
 										"ml-auto": true,
 									},
-									Attrs: []Attr{
-										{
-											Key:   "x-on:click",
-											Value: "toggleLayout()",
+								},
+									Button(ButtonProps{
+										IconStart: g.Group([]g.Node{
+											Icon(IconProps{Icon: "ri-moon-line", Attrs: []Attr{{Key: "x-show", Value: "theme === 'light'"}}}),
+											Icon(IconProps{Icon: "ri-sun-line", Attrs: []Attr{{Key: "x-show", Value: "theme === 'dark'"}}}),
+										}),
+										Variant: ButtonVariantGhost,
+										Attrs: []Attr{
+											{
+												Key: "x-data",
+												Value: `
+                        {
+                          theme: "dark",
+                          switchDark() {
+                            const scheme = "dark"
+                            document.querySelector("html").style.setProperty("color-scheme", scheme)
+                            this.theme = scheme
+                            localStorage.setItem("colorScheme", scheme);
+                          },
+                          switchLight() {
+                            const scheme = "light"
+                            document.querySelector("html").style.setProperty("color-scheme", scheme)
+                            this.theme = scheme
+                            localStorage.setItem("colorScheme", scheme);
+                          },
+                        }
+                      `,
+											},
+											{
+												Key:   "x-on:click",
+												Value: "theme === 'light' ? switchDark() : switchLight()",
+											},
+											{
+												Key:   "x-init",
+												Value: "if (localStorage.getItem('colorScheme')) { theme = localStorage.getItem('colorScheme') } else { localStorage.setItem('colorScheme', 'dark') }",
+											},
+										}}),
+									Button(ButtonProps{
+										IconStart: g.Group([]g.Node{
+											Icon(IconProps{Icon: "ri-layout-bottom-line", Attrs: []Attr{{Key: "x-show", Value: "!bottom"}}}),
+											Icon(IconProps{Icon: "ri-layout-left-line", Attrs: []Attr{{Key: "x-show", Value: "bottom"}}}),
+										}),
+										Variant: ButtonVariantGhost,
+										Attrs: []Attr{
+											{
+												Key:   "x-on:click",
+												Value: "toggleLayout()",
+											},
+											{
+												Key:   "x-ref",
+												Value: "toggle-layout-button",
+											},
 										},
-										{
-											Key:   "x-ref",
-											Value: "toggle-layout-button",
-										},
-									},
-								}),
+									}),
+								),
 							),
 							h.Div(
 								h.Class("app-shell__pane-body"),
