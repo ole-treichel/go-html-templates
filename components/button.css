@@ -5,7 +5,7 @@
     padding: calc(var(--size) * 0.125) calc(var(--size) * 0.25);
     background: var(--color-text);
     color: var(--color-bg);
-    border: 1px solid var(--color-text);
+    border: 2px solid var(--color-text);
     border-radius: 0px;
     max-width: fit-content;
     cursor: pointer;
@@ -35,11 +35,16 @@
 
   .button--ghost {
     background: transparent;
-    border-color: var(--color-border);
+    border: none;
     color: var(--color-text);
   }
 
   .button--ghost:hover, .button--ghost:focus {
-    border-color: var(--color-text);
+    text-decoration: underline;
+    outline: none;
+  }
+
+  .button--ghost:focus-visible {
+    outline: 1px solid var(--color-border);
   }
 }

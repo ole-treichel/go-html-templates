@@ -69,10 +69,10 @@
     --size: 1rem;
     --color-text: light-dark(hsl(0, 0%, 7%), hsl(0, 0%, 88%));
     --color-bg: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 6%));
-    --color-surface: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 10%));
-    --color-border: light-dark(hsl(0, 0%, 93%), hsl(0, 0%, 15%));
+    --color-surface: light-dark(hsl(0, 0%, 98%), hsl(0, 0%, 10%));
+    --color-border: light-dark(hsl(0, 0%, 88%), hsl(0, 0%, 15%));
 
-    --border-radius: 3px;
+    --border-radius: 0px;
     --input-height: calc(var(--size) * 1.4);
   }
 
