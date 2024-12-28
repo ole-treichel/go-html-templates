@@ -46,8 +46,22 @@ func PanePlace(place Place) g.Node {
 			g.Attr("class", "places-list__place-cell"),
 			c.Button(
 				c.ButtonProps{
-					Variant:   c.ButtonVariantGhost,
-					IconStart: c.Icon(c.IconProps{Icon: "ri-more-2-line"}),
+					Variant: c.ButtonVariantGhost,
+					Label:   "Delete",
+					Attrs: []c.Attr{
+						{
+							Key:   "hx-delete",
+							Value: "/places/" + strconv.Itoa(place.Id),
+						},
+						{
+							Key:   "hx-target",
+							Value: "closest .places-list__place",
+						},
+						{
+							Key:   "hx-swap",
+							Value: "delete",
+						},
+					},
 				},
 			),
 		),
@@ -127,6 +141,20 @@ func CreatePlaceHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("HX-Trigger", "map-create-mode-start")
 	PaneCreatePlace().Render(w)
+}
+
+func DeletePlaceHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	err := DeletePlace(id)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	w.Header().Add("HX-Trigger", "map-reload-places")
+
+	return
 }
 
 func ListPlaceHandler(w http.ResponseWriter, r *http.Request) {

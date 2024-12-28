@@ -51,3 +51,16 @@ func CreatePlace(input PlaceInput) error {
 
 	return nil
 }
+
+func DeletePlace(id string) error {
+	_, err := Conn.Exec(
+		"delete from places where id = $1",
+		id,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

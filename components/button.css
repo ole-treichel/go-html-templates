@@ -16,6 +16,7 @@
 
   .button__label {
     line-height: calc(var(--size) * 0.8);
+    text-transform: uppercase;
   }
 
   .button__icon {

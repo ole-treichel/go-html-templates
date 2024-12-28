@@ -31,6 +31,7 @@ func main() {
 	mux.HandleFunc("GET /", places.MapHandler)
 	mux.HandleFunc("GET /places/create", places.CreatePlaceHandler)
 	mux.HandleFunc("POST /places/create", places.CreatePlaceHandler)
+	mux.HandleFunc("DELETE /places/{id}", places.DeletePlaceHandler)
 	mux.HandleFunc("GET /places/list", places.ListPlaceHandler)
 	mux.HandleFunc("GET /places/mvt/{z}/{x}/{y}", places.MvtHandler)
 
