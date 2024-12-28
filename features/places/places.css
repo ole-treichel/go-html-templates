@@ -1,8 +1,10 @@
 .places-list {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: calc(var(--size) * 2) auto auto min-content;
+  grid-template-columns: min-content auto auto min-content;
   column-gap: calc(var(--size) * 0.5);
+
+  font-size: calc(var(--size) * 0.8);
 }
 
 .places-list__place {
@@ -14,10 +16,6 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.places-list__place:last-child {
-  border-bottom: none;
-}
-
 .places-list__place-cell {
   padding: calc(var(--size) * 0.5);
 }
@@ -27,7 +25,15 @@
   cursor: pointer;
 }
 
+.places-list__place-cell-id {
+  text-align: right;
+}
+
 .places-list__place:hover {
   background: var(--color-surface);
 }
 
+.places-create {
+  padding: var(--size);
+  grid-column: 1 / span 4;
+}

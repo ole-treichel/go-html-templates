@@ -30,3 +30,24 @@ func GetAllPlaces() ([]Place, error) {
 
 	return places, nil
 }
+
+type PlaceInput struct {
+	Name        string
+	Description string
+	Geom        string
+}
+
+func CreatePlace(input PlaceInput) error {
+	_, err := Conn.Exec(
+		"insert into places (name, description, geom) values($1, $2, SetSRID(GeomFromGeoJSON($3), 4326))",
+		input.Name,
+		input.Description,
+		input.Geom,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

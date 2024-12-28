@@ -11,8 +11,9 @@ import (
 )
 
 type PageProps struct {
-	Title string
-	Pane  g.Node
+	Title       string
+	Pane        g.Node
+	PaneActions g.Node
 }
 
 func AppShell(props PageProps, children ...g.Node) g.Node {
@@ -23,6 +24,11 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 				h.Link(
 					g.Attr("rel", "stylesheet"),
 					g.Attr("href", "/public/assets/maplibre-gl.min.css"),
+					g.Attr("type", "text/css"),
+				),
+				h.Link(
+					g.Attr("rel", "stylesheet"),
+					g.Attr("href", "/public/assets/maplibre-gl-terradraw.css"),
 					g.Attr("type", "text/css"),
 				),
 				h.Link(
@@ -111,13 +117,8 @@ func AppShell(props PageProps, children ...g.Node) g.Node {
 									Row: true,
 									Gap: GapSmall,
 								},
-									Button(ButtonProps{
-										Variant: ButtonVariantGhost,
-										Label:   "New",
-									}),
-									Button(ButtonProps{
-										Variant: ButtonVariantGhost,
-										Label:   "Filter",
+									g.Iff(props.PaneActions != nil, func() g.Node {
+										return props.PaneActions
 									}),
 								),
 								Stack(StackProps{

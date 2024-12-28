@@ -29,6 +29,9 @@ func main() {
 	mux.Handle("GET /public/", http.StripPrefix("/public/", http.FileServer(http.FS(publicFiles))))
 
 	mux.HandleFunc("GET /", places.MapHandler)
+	mux.HandleFunc("GET /places/create", places.CreatePlaceHandler)
+	mux.HandleFunc("POST /places/create", places.CreatePlaceHandler)
+	mux.HandleFunc("GET /places/list", places.ListPlaceHandler)
 	mux.HandleFunc("GET /places/mvt/{z}/{x}/{y}", places.MvtHandler)
 
 	if os.Getenv("APP_ENV") == "development" {

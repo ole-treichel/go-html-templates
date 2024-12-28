@@ -1,4 +1,5 @@
 import { absoluteUrl } from '/public/assets/main.js'
+import MaplibreTerradrawControl from '/public/assets/maplibre-gl-terradraw.es.js'
 
 class Map extends HTMLElement {
   constructor() {
@@ -7,6 +8,9 @@ class Map extends HTMLElement {
     this.handleMoveEnd = this.handleMoveEnd.bind(this)
     this.center = this.center.bind(this)
     this.fitBounds = this.fitBounds.bind(this)
+    this.createModeStart = this.createModeStart.bind(this)
+    this.createModeEnd = this.createModeEnd.bind(this)
+    this.reloadPlaces = this.reloadPlaces.bind(this)
   }
 
   connectedCallback() {
@@ -76,6 +80,9 @@ class Map extends HTMLElement {
 
     window.addEventListener('map-center', e => this.center(e.detail))
     window.addEventListener('map-fit-bounds', e => this.fitBounds(e.detail))
+    window.addEventListener('map-create-mode-start', e => this.createModeStart(e.detail))
+    window.addEventListener('map-create-mode-end', e => this.createModeEnd(e.detail))
+    window.addEventListener('map-reload-places', e => this.reloadPlaces(e.detail))
   }
 
   handleMoveEnd() {
@@ -105,6 +112,34 @@ class Map extends HTMLElement {
       padding: 100,
       duration: 0
     })
+  }
+
+  createModeStart() {
+    console.log('create mode start')
+
+    this.draw = new MaplibreTerradrawControl({
+      modes: [
+        'point',
+        'polygon',
+      ],
+      open: true,
+    })
+
+    this.map.addControl(this.draw, 'top-right')
+  }
+
+  createModeEnd() {
+    console.log('create mode end')
+
+    if (this.draw) {
+      this.draw.onRemove()
+      console.log(this.draw)
+    }
+  }
+
+  reloadPlaces() {
+    console.log('trigger repaint')
+    this.map.getSource('places').load()
   }
 }
 
