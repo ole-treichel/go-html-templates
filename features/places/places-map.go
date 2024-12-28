@@ -61,6 +61,10 @@ func PanePlace(place Place) g.Node {
 							Key:   "hx-swap",
 							Value: "delete",
 						},
+						{
+							Key:   "hx-confirm",
+							Value: "Delete place #" + strconv.Itoa(place.Id) + "?",
+						},
 					},
 				},
 			),
