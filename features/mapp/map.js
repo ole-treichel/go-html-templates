@@ -115,8 +115,6 @@ class Map extends HTMLElement {
   }
 
   createModeStart() {
-    console.log('create mode start')
-
     this.draw = new MaplibreTerradrawControl({
       modes: [
         'point',
@@ -129,16 +127,12 @@ class Map extends HTMLElement {
   }
 
   createModeEnd() {
-    console.log('create mode end')
-
     if (this.draw) {
       this.draw.onRemove()
-      console.log(this.draw)
     }
   }
 
   reloadPlaces() {
-    console.log('trigger repaint')
     this.map.getSource('places').load()
   }
 }

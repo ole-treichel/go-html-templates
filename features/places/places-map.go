@@ -94,9 +94,6 @@ func CreatePlaceHandler(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("name")
 		description := r.FormValue("description")
 		geom := r.FormValue("geom")
-		fmt.Println(name)
-		fmt.Println(description)
-		fmt.Println(geom)
 
 		if name != "" && description != "" && geom != "" {
 
