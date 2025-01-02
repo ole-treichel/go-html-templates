@@ -2,6 +2,7 @@ package places
 
 type Place struct {
 	Id          int
+	Geom        string
 	Name        string
 	Description string
 	Bounds      string
@@ -9,7 +10,7 @@ type Place struct {
 
 func GetAllPlaces() ([]Place, error) {
 	rows, err := Conn.Query(
-		"select id, name, description, AsGeoJSON(Envelope(geom)) as bounds from places",
+		"select id, AsGeoJSON(geom) as geom, name, description, AsGeoJSON(Envelope(geom)) as bounds from places",
 	)
 	if err != nil {
 		return nil, err
@@ -21,7 +22,7 @@ func GetAllPlaces() ([]Place, error) {
 	for rows.Next() {
 		var place Place
 
-		if err := rows.Scan(&place.Id, &place.Name, &place.Description, &place.Bounds); err != nil {
+		if err := rows.Scan(&place.Id, &place.Geom, &place.Name, &place.Description, &place.Bounds); err != nil {
 			return nil, err
 		}
 
@@ -63,4 +64,37 @@ func DeletePlace(id string) error {
 	}
 
 	return nil
+}
+
+func GetPlace(id string) (*Place, error) {
+	var place Place
+	err := Conn.QueryRow(
+		"select id, AsGeoJSON(geom) as geom, name, description, AsGeoJSON(Envelope(geom)) as bounds from places where id = $1",
+		id,
+	).Scan(&place.Id, &place.Geom, &place.Name, &place.Description, &place.Bounds)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &place, nil
+}
+
+func UpdatePlace(place Place) error {
+	res, err := Conn.Exec(
+		"update places set geom = SetSRID(GeomFromGeoJSON($1), 4326), name = $2, description = $3 where id = $4",
+		place.Geom,
+		place.Name,
+		place.Description,
+		place.Id,
+	)
+
+	_, err = res.RowsAffected()
+	_, err = res.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	return err
 }

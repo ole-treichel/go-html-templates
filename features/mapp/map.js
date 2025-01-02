@@ -11,6 +11,10 @@ class Map extends HTMLElement {
     this.createModeStart = this.createModeStart.bind(this)
     this.createModeEnd = this.createModeEnd.bind(this)
     this.reloadPlaces = this.reloadPlaces.bind(this)
+    this.editModeStart = this.editModeStart.bind(this)
+    this.editModeEnd = this.editModeEnd.bind(this)
+
+    this._selectFeature = this._selectFeature.bind(this)
   }
 
   connectedCallback() {
@@ -83,6 +87,8 @@ class Map extends HTMLElement {
     window.addEventListener('map-create-mode-start', e => this.createModeStart(e.detail))
     window.addEventListener('map-create-mode-end', e => this.createModeEnd(e.detail))
     window.addEventListener('map-reload-places', e => this.reloadPlaces(e.detail))
+    window.addEventListener('map-edit-mode-start', e => this.editModeStart(e.detail))
+    window.addEventListener('map-edit-mode-end', e => this.editModeEnd(e.detail))
   }
 
   handleMoveEnd() {
@@ -127,13 +133,61 @@ class Map extends HTMLElement {
   }
 
   createModeEnd() {
-    if (this.draw) {
-      this.draw.onRemove()
-    }
+    this.endDraw()
   }
 
   reloadPlaces() {
     this.map.getSource('places').load()
+  }
+
+  editModeStart({ geom }) {
+    console.log(`Edit mode start`, geom)
+
+    this.draw = new MaplibreTerradrawControl({
+      modes: [
+        'select',
+        'polygon',
+      ],
+      open: true,
+    })
+    this.map.addControl(this.draw, 'top-right')
+
+    const drawInstance = this.draw.getTerraDrawInstance()
+
+    this.editFeatureId = drawInstance.getFeatureId()
+
+    const feature = {
+      id: this.editFeatureId,
+      type: 'Feature',
+      geometry: geom,
+      properties: {
+        mode: geom.type.toLowerCase(),
+      }
+    }
+
+    drawInstance.addFeatures([feature])
+    drawInstance.selectFeature(this.editFeatureId)
+
+    drawInstance.on('deselect', this._selectFeature)
+  }
+
+  _selectFeature() {
+    const drawInstance = this.draw.getTerraDrawInstance()
+    setTimeout(() => {
+      drawInstance?.selectFeature(this.editFeatureId)
+    }, 0)
+  }
+
+  editModeEnd() {
+    this.endDraw()
+  }
+
+  endDraw() {
+    if (this.draw) {
+      const drawInstance = this.draw.getTerraDrawInstance()
+      drawInstance?.off('deselect', this._selectFeature)
+      this.draw.onRemove()
+    }
   }
 }
 

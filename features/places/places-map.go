@@ -40,6 +40,26 @@ func PanePlace(place Place) g.Node {
 		),
 		h.Div(
 			g.Attr("class", "places-list__place-cell"),
+			c.Button(
+				c.ButtonProps{
+					Variant: c.ButtonVariantGhost,
+					Label:   "Edit",
+					Attrs: []c.Attr{
+						{
+							Key:   "x-on:click",
+							Value: fmt.Sprintf("window.dispatchEvent(new CustomEvent('map-fit-bounds', { detail: { geometry: %s } }))", place.Bounds),
+						},
+						{
+							Key:   "hx-get",
+							Value: "/places/edit/" + strconv.Itoa(place.Id),
+						},
+						{
+							Key:   "hx-swap",
+							Value: "none",
+						},
+					},
+				},
+			),
 		),
 
 		h.Div(
@@ -168,13 +188,103 @@ func ListPlaceHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	w.Header().Add("HX-Trigger", "map-create-mode-end")
+	w.Header().Add("HX-Trigger", "map-create-mode-end,map-edit-mode-end")
 
 	PanePlaceList(
 		g.Map(places, func(place Place) g.Node {
 			return PanePlace(place)
 		}),
 	).Render(w)
+}
+
+func EditHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	if r.Method == "PATCH" {
+		r.ParseForm()
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+		geom := r.FormValue("geom")
+
+		idParsed, err := strconv.Atoi(id)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		if name != "" && description != "" && geom != "" {
+			err := UpdatePlace(Place{
+				Id:          idParsed,
+				Name:        name,
+				Description: description,
+				Geom:        geom,
+			})
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			w.Header().Add("HX-Trigger", "map-edit-mode-end,map-reload-places")
+			places, err := GetAllPlaces()
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			PanePlaceList(
+				g.Map(places, func(place Place) g.Node {
+					return PanePlace(place)
+				}),
+			).Render(w)
+			return
+		}
+	}
+
+	place, err := GetPlace(id)
+
+	if err != nil {
+		fmt.Println(err)
+
+		return
+	}
+
+	w.Header().Add("HX-Trigger", fmt.Sprintf(`{ "map-edit-mode-start":  { "geom": %s } }`, place.Geom))
+
+	h.Form(
+		g.Attr("id", paneSwapId),
+		g.Attr("hx-swap-oob", "true"),
+		g.Attr("hx-patch", "/places/edit/"+id),
+		g.Attr("class", "places-create"),
+		g.Attr("hx-vals", "js:{ geom: document.querySelector('x-map').draw?.getTerraDrawInstance?.().getSnapshot?.()[0]?.geometry }"),
+		c.Input(c.InputProps{
+			ID:          "name",
+			Placeholder: "Name",
+			Value:       place.Name,
+		}),
+		c.Input(c.InputProps{
+			ID:          "description",
+			Placeholder: "Description",
+			Value:       place.Description,
+		}),
+		c.Button(c.ButtonProps{
+			Label: "Save",
+		}),
+		c.Button(c.ButtonProps{
+			Label: "Cancel",
+			Attrs: []c.Attr{
+				{
+					Key:   "hx-get",
+					Value: "/places/list",
+				},
+				{
+					Key:   "hx-swap",
+					Value: "none",
+				},
+			},
+		}),
+	).Render(w)
+
 }
 
 func MapHandler(w http.ResponseWriter, r *http.Request) {

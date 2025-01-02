@@ -1,7 +1,7 @@
 .places-list {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: min-content auto auto min-content;
+  grid-template-columns: min-content auto min-content min-content;
   column-gap: calc(var(--size) * 0.5);
 
   font-size: calc(var(--size) * 0.8);
