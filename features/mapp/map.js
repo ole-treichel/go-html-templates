@@ -32,7 +32,7 @@ class Map extends HTMLElement {
         sources: {
           osm: {
             type: 'vector',
-            url: "pmtiles://https://s3.ole.md/gis/20241110.pmtiles",
+            url: "pmtiles://http://localhost:3000/pmtiles",
             minzoom: 0,
             maxzoom: 14
           },
@@ -141,8 +141,6 @@ class Map extends HTMLElement {
   }
 
   editModeStart({ geom }) {
-    console.log(`Edit mode start`, geom)
-
     this.draw = new MaplibreTerradrawControl({
       modes: [
         'select',

@@ -2,3 +2,4 @@
 places.db
 places.db-shm
 places.db-wal
+*.pmtiles

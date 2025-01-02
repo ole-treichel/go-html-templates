@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	ar "go-html-templates/features/autoreload"
+	"go-html-templates/features/pmtiles"
 	"log"
 	"net/http"
 	"os"
@@ -41,6 +42,8 @@ func main() {
 	mux.HandleFunc("DELETE /places/{id}", places.DeletePlaceHandler)
 
 	mux.HandleFunc("GET /places/mvt/{z}/{x}/{y}", places.MvtHandler)
+
+	mux.HandleFunc("GET /pmtiles", pmtiles.PmtilesHandler)
 
 	if os.Getenv("APP_ENV") == "development" {
 		mux.HandleFunc("GET /autoreload", ar.AutoreloadHandler)
